@@ -1,6 +1,8 @@
 package apiserver
 
 import (
+	"github.com/Kirillznkv/http-rest-api/internal/app/model"
+	"github.com/Kirillznkv/http-rest-api/internal/app/store"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 	"io"
@@ -12,6 +14,7 @@ type APIServer struct {
 	config *Config
 	logger *logrus.Logger
 	router *mux.Router
+	store  *store.Store
 }
 
 // New ...
@@ -28,8 +31,21 @@ func (s *APIServer) Start() error {
 	if err := s.configureLogger(); err != nil {
 		return err
 	}
+
 	s.configureRouter()
+
+	if err := s.ConfigureStore(); err != nil {
+		return err
+	}
+
 	s.logger.Info("Starting api server...")
+
+	m := &model.User{
+		Email:             "Zenich99@gmail.com",
+		EncryptedPassword: "qwerty1234",
+	}
+	s.store.User().Create(m)
+
 	return http.ListenAndServe(s.config.BindAddr, s.router)
 }
 
@@ -44,6 +60,15 @@ func (s *APIServer) configureLogger() error {
 
 func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/hello", s.handleHello())
+}
+
+func (s *APIServer) ConfigureStore() error {
+	st := store.New(s.config.Store)
+	if err := st.Open(); err != nil {
+		return err
+	}
+	s.store = st
+	return st.MigrateUP()
 }
 
 func (s *APIServer) handleHello() http.HandlerFunc {
