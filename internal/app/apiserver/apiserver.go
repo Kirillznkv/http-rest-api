@@ -1,7 +1,6 @@
 package apiserver
 
 import (
-	"github.com/Kirillznkv/http-rest-api/internal/app/model"
 	"github.com/Kirillznkv/http-rest-api/internal/app/store"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
@@ -39,12 +38,6 @@ func (s *APIServer) Start() error {
 	}
 
 	s.logger.Info("Starting api server...")
-
-	m := &model.User{
-		Email:             "Zenich99@gmail.com",
-		EncryptedPassword: "qwerty1234",
-	}
-	s.store.User().Create(m)
 
 	return http.ListenAndServe(s.config.BindAddr, s.router)
 }
