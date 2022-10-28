@@ -1,7 +1,7 @@
 MIGRATIONS_DIR = db/migrations
 DB_URL = "host=localhost port=5432 user=kshanti password=qwerty1234 dbname=mydb sslmode=disable"
 
-all: db_up db_for_test_up migrate_up build
+all: db_up migrate_up build
 
 .PHONY: build
 build:
@@ -32,4 +32,4 @@ migrate_up:
 migrate_down:
 	goose -dir $(MIGRATIONS_DIR) postgres $(DB_URL) down
 
-#.DEFAULT_GOAL := build
+.DEFAULT_GOAL := build
