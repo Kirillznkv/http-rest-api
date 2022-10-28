@@ -1,7 +1,7 @@
 package model_test
 
 import (
-	"github.com/Kirillznkv/http-rest-api/internal/app/model"
+	"github.com/Kirillznkv/new_rest_api/internal/app/model"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -60,7 +60,7 @@ func TestUser_Validate(t *testing.T) {
 			name: "short password",
 			u: func() *model.User {
 				u := model.TestUser(t)
-				u.Password = "1234567"
+				u.Password = "root"
 				return u
 			},
 			isValid: false,
@@ -68,16 +68,19 @@ func TestUser_Validate(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		if tc.isValid {
-			assert.NoError(t, tc.u().Validate())
-		} else {
-			assert.Error(t, tc.u().Validate())
-		}
+		t.Run(tc.name, func(t *testing.T) {
+			if tc.isValid {
+				assert.NoError(t, tc.u().Validate())
+			} else {
+				assert.Error(t, tc.u().Validate())
+			}
+		})
 	}
 }
 
 func TestUser_BeforeCreate(t *testing.T) {
 	u := model.TestUser(t)
-	assert.NoError(t, u.BeforeCreate())
+	err := u.BeforeCreate()
+	assert.NoError(t, err)
 	assert.NotEmpty(t, u.EncryptedPassword)
 }

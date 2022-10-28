@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"github.com/BurntSushi/toml"
-	"github.com/Kirillznkv/http-rest-api/internal/app/apiserver"
+	"github.com/Kirillznkv/new_rest_api/internal/app/apiserver"
 	"log"
 )
 
@@ -12,7 +12,7 @@ var (
 )
 
 func init() {
-	flag.StringVar(&configPath, "config-path", "configs/apiserver.toml", "path to toml config file")
+	flag.StringVar(&configPath, "config-path", "configs/apiserver.toml", "path to config file")
 }
 
 func main() {
@@ -24,8 +24,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	s := apiserver.New(config)
-	if err := s.Start(); err != nil {
+	if err := apiserver.Start(config); err != nil {
 		log.Fatal(err)
 	}
 }

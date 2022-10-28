@@ -2,10 +2,10 @@ package model
 
 import validation "github.com/go-ozzo/ozzo-validation"
 
-func requireadIf(cond bool) validation.RuleFunc {
-	return func(val any) error {
+func requairedIf(cond bool) validation.RuleFunc {
+	return func(value interface{}) error {
 		if cond {
-			return validation.Validate(val, validation.Required)
+			return validation.Validate(value, validation.Required)
 		}
 
 		return nil
