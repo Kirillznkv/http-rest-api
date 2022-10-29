@@ -1,3 +1,4 @@
 bind_addr = ":8080"
 log_level = "debug"
 database_url = "host=localhost port=5432 user=kshanti password=qwerty1234 dbname=mydb sslmode=disable"
+session_key = "453knj4nk7k96lklkdscnreio459i3rj9isvm09j4uhoengpw0394jg86ugldknf83yf78wscw2jbefnujfv37g5belsgr7"
