@@ -1,13 +1,14 @@
 package teststore
 
 import (
+	"errors"
 	"github.com/Kirillznkv/new_rest_api/internal/app/model"
 	"github.com/Kirillznkv/new_rest_api/internal/app/store"
 )
 
 type UserRepository struct {
 	store *Store
-	users map[string]*model.User
+	users map[int]*model.User
 }
 
 func (r *UserRepository) Create(u *model.User) error {
@@ -19,17 +20,30 @@ func (r *UserRepository) Create(u *model.User) error {
 		return err
 	}
 
-	r.users[u.Email] = u
-	u.ID = len(r.users)
+	if _, ok := r.users[u.ID]; ok {
+		return errors.New("Email duplicated")
+	}
+	u.ID = len(r.users) + 1
+	r.users[u.ID] = u
 
 	return nil
 }
 
-func (r *UserRepository) FindByEmail(email string) (*model.User, error) {
-	u, ok := r.users[email]
+func (r *UserRepository) Find(id int) (*model.User, error) {
+	u, ok := r.users[id]
 	if !ok {
 		return nil, store.ErrUserNotFound
 	}
 
 	return u, nil
+}
+
+func (r *UserRepository) FindByEmail(email string) (*model.User, error) {
+	for _, u := range r.users {
+		if u.Email == email {
+			return u, nil
+		}
+	}
+
+	return nil, store.ErrUserNotFound
 }
