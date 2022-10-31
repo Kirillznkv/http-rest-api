@@ -32,4 +32,4 @@ migrate_up:
 migrate_down:
 	goose -dir $(MIGRATIONS_DIR) postgres $(DB_URL) down
 
-.DEFAULT_GOAL := build
+#.DEFAULT_GOAL := build
