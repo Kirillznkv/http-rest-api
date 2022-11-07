@@ -1,3 +1,4 @@
 # http-rest-api
 
-## Project under development...
+## Учебный пет-проект
+
